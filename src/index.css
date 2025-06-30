@@ -1,0 +1,718 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 0 0% 88%;
+
+    --card: 222 47% 9%;
+    --card-foreground: 0 0% 88%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 0 0% 88%;
+
+    --primary: 187 100% 36%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 0 0% 88%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 0 0% 88%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 88%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+    font-family: Consolas, Menlo, Monaco, "Liberation Mono", "Courier New", monospace;
+  }
+
+  body {
+    @apply bg-ai-dark text-ai-light overflow-x-hidden;
+    font-family: Consolas, Menlo, Monaco, "Liberation Mono", "Courier New", monospace;
+    cursor: none;
+  }
+
+  /* Custom scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: theme('colors.ai.dark');
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: theme('colors.ai.cyan');
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.ai.green');
+  }
+  
+  /* Custom cursor styles with spinner animation */
+  .cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background-color: theme('colors.ai.cyan');
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+    z-index: 9999;
+    mix-blend-mode: screen;
+  }
+  
+  .cursor-outline {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 2px solid theme('colors.ai.cyan');
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, border 0.3s;
+    z-index: 9998;
+    mix-blend-mode: exclusion;
+  }
+  
+  .cursor-hover {
+    border: 2px dashed theme('colors.ai.green');
+  }
+  
+  /* Updated spinner animation for cursor */
+  .cursor-spinner {
+    border-width: 2px;
+    border-style: solid;
+    border-color: transparent;
+    border-top-color: theme('colors.ai.green');
+    border-bottom-color: theme('colors.ai.cyan');
+    animation: cursor-spin 1s linear infinite;
+  }
+  
+  @keyframes cursor-spin {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+  
+  .cursor-bite-effect {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(0, 173, 181, 0.3);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    animation: expand 0.5s ease-out forwards;
+    z-index: 9997;
+  }
+  
+  /* Click flash effect */
+  .cursor-click-flash {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: theme('colors.ai.green');
+    border-radius: 50%;
+    z-index: 9997;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    animation: flash 0.5s ease-out forwards;
+  }
+  
+  @keyframes flash {
+    0% {
+      opacity: 1;
+      width: 2px;
+      height: 2px;
+      box-shadow: 0 0 4px theme('colors.ai.cyan');
+    }
+    70% {
+      opacity: 0.8;
+      width: 60px;
+      height: 60px;
+      box-shadow: 0 0 20px theme('colors.ai.cyan');
+    }
+    100% {
+      opacity: 0;
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  @keyframes expand {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 0.8;
+    }
+    100% {
+      width: 50px;
+      height: 50px;
+      opacity: 0;
+    }
+  }
+  
+  /* Make sure cursor is visible over chatbox */
+  .chatbot-window, .chatbot-header, .chatbot-messages, .chatbot-input, .message, .chatbot-button {
+    cursor: none !important;
+  }
+  
+  /* Profile photo styles with enhanced glow */
+  .profile-photo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .profile-photo {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba(0, 173, 181, 0.4);
+    box-shadow: 
+      0 0 20px rgba(0, 173, 181, 0.4),
+      0 0 40px rgba(0, 173, 181, 0.1);
+    animation: pulse-glow 3s infinite alternate;
+  }
+  
+  @media (max-width: 768px) {
+    .profile-photo {
+      width: 260px;
+      height: 260px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .profile-photo {
+      width: 220px;
+      height: 220px;
+    }
+  }
+  
+  .profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+  }
+  
+  .profile-photo:hover img {
+    transform: scale(1.05);
+  }
+  
+  /* Enhanced pulsing glow animation */
+  @keyframes pulse-glow {
+    0% {
+      box-shadow: 
+        0 0 20px rgba(0, 173, 181, 0.5),
+        0 0 40px rgba(0, 173, 181, 0.2);
+    }
+    100% {
+      box-shadow: 
+        0 0 30px rgba(0, 173, 181, 0.7),
+        0 0 60px rgba(0, 173, 181, 0.3);
+    }
+  }
+  
+  /* Glow button effect and hover effects */
+  .glow-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 173, 181, 0.4);
+  }
+  
+  .glow-button:hover {
+    box-shadow: 0 0 25px rgba(0, 173, 181, 0.6);
+  }
+  
+  .glow-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 10px rgba(0, 173, 181, 0.3);
+  }
+  
+  .glow-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0,173,181,0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  
+  .glow-button:hover::before {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  
+  /* New hover effect for cards */
+  .hover-card-glow {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-card-glow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 173, 181, 0.15), 0 0 15px rgba(0, 173, 181, 0.1);
+    border-color: rgba(0, 173, 181, 0.5);
+  }
+  
+  /* Hover glow effect for buttons and interactive elements */
+  .hover-glow {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 15px rgba(0, 173, 181, 0.6);
+    transform: translateY(-2px);
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8;
+  }
+
+  .section-title {
+    @apply text-4xl sm:text-5xl font-bold bg-gradient-to-r from-ai-blue to-ai-cyan bg-clip-text text-transparent mb-4;
+  }
+
+  .section-title-line {
+    @apply w-24 h-px bg-ai-cyan/10 mx-auto mb-16;
+  }
+
+  .glow {
+    text-shadow: 0 0 15px rgba(0, 173, 181, 0.6);
+  }
+
+  .glow-blue {
+    text-shadow: 0 0 15px rgba(61, 90, 254, 0.6);
+  }
+
+  .card-3d {
+    @apply bg-ai-dark/50 backdrop-blur-md border border-ai-cyan/20 rounded-xl p-6 shadow-lg;
+    transform-style: preserve-3d;
+  }
+  
+  /* Project cards - keep stable */
+  .project-card {
+    @apply bg-ai-dark/60 backdrop-blur-md border border-ai-cyan/20 rounded-xl overflow-hidden shadow-lg transition-all duration-300;
+    height: 100%;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    position: relative;
+  }
+  
+  .project-card:hover {
+    @apply border-ai-cyan/50 shadow-ai-cyan/20;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 173, 181, 0.15);
+  }
+  
+  /* Testimonial styles - updated professional look */
+  .testimonial-card {
+    @apply bg-ai-dark/30 backdrop-blur-md border border-ai-cyan/20 rounded-xl p-6;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+  }
+  
+  .testimonial-card:hover {
+    @apply border-ai-cyan/40;
+    box-shadow: 0 10px 30px rgba(0, 173, 181, 0.15);
+    transform: translateY(-5px);
+  }
+
+  /* Future-proof responsive box utilities */
+  .responsive-box {
+    @apply w-full max-w-full overflow-hidden;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .auto-box {
+    @apply bg-ai-dark/50 backdrop-blur-md border border-ai-cyan/20 rounded-xl p-4;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .sub-box {
+    @apply bg-ai-dark/30 border border-ai-cyan/10 rounded-lg p-3;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  /* Ensure all content fits within containers */
+  .content-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Text containers that prevent overflow */
+  .text-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* White typing cursor animation */
+.typing-cursor-white {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background-color: #ffffff;
+  animation: typing-cursor 0.8s infinite;
+}
+
+@keyframes typing-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Multicolor box animation for active navigation link */
+.active-nav-link {
+  position: relative;
+  color: theme('colors.ai.cyan');
+}
+
+.active-nav-link::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -12px;
+  right: -12px;
+  bottom: -8px;
+  background: linear-gradient(135deg, 
+    rgba(0, 173, 181, 0.2), 
+    rgba(61, 90, 254, 0.2), 
+    rgba(0, 255, 171, 0.2), 
+    rgba(92, 107, 192, 0.2));
+  border-radius: 8px;
+  z-index: -1;
+  animation: multicolorPulse 3s infinite alternate;
+}
+
+@keyframes multicolorPulse {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 0 15px rgba(0, 173, 181, 0.3);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 0 15px rgba(61, 90, 254, 0.3);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 0 15px rgba(0, 255, 171, 0.3);
+  }
+}
+
+/* Chatbot widget styles */
+.chatbot-widget {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
+}
+
+.chatbot-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #00ADB5, #3D5AFE);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 173, 181, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.chatbot-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 173, 181, 0.7);
+}
+
+.chatbot-window {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 350px;
+  height: 450px;
+  background: rgba(30, 30, 47, 0.95);
+  border: 1px solid rgba(0, 173, 181, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transform-origin: bottom right;
+  z-index: 1001;
+}
+
+/* Mobile chatbot positioning - keep button on right but center window */
+@media (max-width: 768px) {
+  .chatbot-widget {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .chatbot-window {
+    width: calc(100vw - 40px);
+    max-width: 350px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: 80px;
+  }
+}
+
+.chatbot-header {
+  padding: 15px;
+  background: linear-gradient(90deg, #00ADB5, #3D5AFE);
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1002;
+}
+
+.chatbot-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1002;
+}
+
+.message {
+  padding: 10px 15px;
+  border-radius: 18px;
+  max-width: 80%;
+  word-break: break-word;
+  z-index: 1002;
+}
+
+.bot-message {
+  background: rgba(0, 173, 181, 0.2);
+  align-self: flex-start;
+  border-bottom-left-radius: 5px;
+}
+
+.user-message {
+  background: rgba(61, 90, 254, 0.2);
+  align-self: flex-end;
+  border-bottom-right-radius: 5px;
+}
+
+.chatbot-input {
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  background: rgba(30, 30, 47, 0.8);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1002;
+}
+
+.chatbot-input input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 10px 15px;
+  color: white;
+  outline: none;
+}
+
+.chatbot-input button {
+  background: linear-gradient(90deg, #00ADB5, #3D5AFE);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* AA Logo Dancing Animation */
+@keyframes logo-dance {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.nav-logo:hover {
+  animation: logo-dance 0.5s ease-in-out;
+}
+
+/* Mobile responsive styles for hero section */
+@media (max-width: 768px) {
+  /* Reduce hero section font sizes on mobile */
+  .hero-name {
+    font-size: 2.5rem !important; /* Reduced from text-4xl (3.5rem) */
+  }
+  
+  .hero-intro {
+    font-size: 0.875rem !important; /* Reduced from text-sm */
+  }
+  
+  .hero-role {
+    font-size: 1.25rem !important; /* Reduced from text-2xl */
+  }
+  
+  .hero-description {
+    font-size: 0.875rem !important; /* Reduced from text-md */
+  }
+  
+  .hero-button {
+    font-size: 0.875rem !important;
+    padding: 0.4rem 1rem !important; /* Reduced padding */
+  }
+  
+  /* Add more spacing between navbar and hero section on mobile */
+  .hero-section-mobile {
+    padding-top: 6rem !important; /* Increased from pt-20 (5rem) */
+  }
+
+  /* Make testimonials section smaller on mobile */
+  #testimonials {
+    padding: 3rem 1rem !important; /* Reduced from py-20 */
+  }
+
+  #testimonials .section-title {
+    font-size: 2rem !important; /* Reduced from text-4xl */
+    margin-bottom: 2rem !important;
+  }
+
+  #testimonials .card-3d {
+    padding: 1rem !important; /* Reduced from p-8 */
+    min-height: 200px !important; /* Reduced from min-h-[300px] */
+  }
+
+  #testimonials .testimonial-content {
+    margin-bottom: 1rem !important; /* Reduced from mb-8 */
+  }
+
+  #testimonials .testimonial-content p {
+    font-size: 1rem !important; /* Reduced from text-xl */
+    line-height: 1.5 !important; /* Reduced from leading-relaxed */
+  }
+
+  #testimonials .text-5xl {
+    font-size: 2.5rem !important; /* Reduced quotation mark size */
+    margin-bottom: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-name {
+    font-size: 2rem !important; /* Further reduced for very small screens */
+  }
+  
+  .hero-role {
+    font-size: 1.125rem !important;
+  }
+
+  /* Further reduce testimonials on very small screens */
+  #testimonials .section-title {
+    font-size: 1.5rem !important;
+  }
+
+  #testimonials .testimonial-content p {
+    font-size: 0.875rem !important;
+  }
+
+  #testimonials .text-5xl {
+    font-size: 2rem !important;
+  }
+}
+
+/* Mobile responsive styles for footer */
+@media (max-width: 768px) {
+  .footer-name {
+    font-size: 1rem !important; /* Reduced from text-xl */
+  }
+  
+  .footer-description {
+    font-size: 0.75rem !important; /* Reduced from text-base */
+  }
+  
+  .footer-location {
+    font-size: 0.75rem !important;
+  }
+  
+  .footer-section-title {
+    font-size: 0.875rem !important; /* Reduced from text-base */
+  }
+  
+  .footer-link {
+    font-size: 0.75rem !important;
+  }
+  
+  .footer-contact {
+    font-size: 0.75rem !important;
+  }
+  
+  .footer-social-icon {
+    width: 16px !important; /* Reduced from 20px */
+    height: 16px !important;
+  }
+  
+  .footer-copyright {
+    font-size: 0.75rem !important; /* Reduced from text-sm */
+  }
+}
