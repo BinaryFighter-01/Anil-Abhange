@@ -1,4 +1,3 @@
-# 🌐 Anil Abhange – Developer Portfolio
 
 This is the source code for my personal developer portfolio website. The portfolio presents my projects, skills, experience, and technical background in a modern and responsive interface.
 
