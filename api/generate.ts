@@ -1,39 +1,49 @@
-import { NextResponse } from "next/server";
+export const config = {
+  runtime: "edge",
+};
 
-export async function POST(req: Request) {
+export default async function handler(req) {
   try {
     const { prompt } = await req.json();
 
     const apiKey = process.env.VITE_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ error: "Missing API key" }, { status: 500 });
+      return new Response(
+        JSON.stringify({ error: "Missing API key" }),
+        { status: 500 }
+      );
     }
 
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: prompt }]
-            }
-          ]
-        })
-      }
-    );
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
-    const data = await response.json();
+    const gRes = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: prompt }]
+          }
+        ]
+      })
+    });
+
+    const data = await gRes.json();
 
     const text =
       data?.candidates?.[0]?.content?.parts?.[0]?.text ||
       "No response from Gemini.";
 
-    return NextResponse.json({ reply: text });
+    return new Response(JSON.stringify({ reply: text }), {
+      headers: { "Content-Type": "application/json" }
+    });
+
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "Server crashed", details: err.message }),
+      { status: 500 }
+    );
   }
 }
