@@ -13,7 +13,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const url =
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.VITE_API_KEY}`;
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${process.env.VITE_API_KEY}`;
 
     const response = await fetch(url, {
       method: "POST",
@@ -21,6 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       body: JSON.stringify({
         contents: [
           {
+            role: "user",
             parts: [{ text: prompt }]
           }
         ]
@@ -29,20 +30,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const data = await response.json();
 
-    console.log("🔍 Gemini API Response:", data);
+    console.log("🔥 RAW GEMINI RESPONSE:", data);
 
-    // Validate the response
-    if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+    // Extract text safely
+    const reply =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+
+    if (!reply) {
       return res.status(500).json({
         error: "Gemini returned no text",
         raw: data
       });
     }
 
-    return res.status(200).json(data);
+    return res.status(200).json({ reply });
 
   } catch (err: any) {
-    console.error("🔥 SERVER ERROR:", err);
+    console.error("SERVER ERROR:", err);
     return res.status(500).json({ error: err.message });
   }
 }
