@@ -1,52 +1,39 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { NextResponse } from "next/server";
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Only POST allowed" });
-  }
-
-  const { prompt } = req.body;
-
-  if (!prompt) {
-    return res.status(400).json({ error: "Missing prompt" });
-  }
-
+export async function POST(req: Request) {
   try {
-    const url =
-      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${process.env.VITE_API_KEY}`;
+    const { prompt } = await req.json();
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: prompt }]
-          }
-        ]
-      })
-    });
+    const apiKey = process.env.VITE_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: "Missing API key" }, { status: 500 });
+    }
+
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: prompt }]
+            }
+          ]
+        })
+      }
+    );
 
     const data = await response.json();
 
-    console.log("🔥 RAW GEMINI RESPONSE:", data);
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "No response from Gemini.";
 
-    // Extract text safely
-    const reply =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
-
-    if (!reply) {
-      return res.status(500).json({
-        error: "Gemini returned no text",
-        raw: data
-      });
-    }
-
-    return res.status(200).json({ reply });
-
-  } catch (err: any) {
-    console.error("SERVER ERROR:", err);
-    return res.status(500).json({ error: err.message });
+    return NextResponse.json({ reply: text });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
