@@ -20,11 +20,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         body: JSON.stringify({
           contents: [
             {
-              parts: [
-                {
-                  text: prompt
-                }
-              ]
+              parts: [{ text: prompt }]
             }
           ]
         })
@@ -32,10 +28,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
 
     const data = await response.json();
-
-    console.log("Gemini API Response:", data); // Debug log
-
     return res.status(200).json(data);
+
   } catch (err: any) {
     console.error("SERVER ERROR:", err);
     return res.status(500).json({ error: err.message });
