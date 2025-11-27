@@ -29,7 +29,7 @@ export default async function handler(req: Request) {
       });
     }
 
-    // Direct REST API call (no SDK needed)
+    // Direct REST API call to Gemini
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`,
       {
@@ -45,7 +45,7 @@ export default async function handler(req: Request) {
 
     const data = await response.json();
     
-    // Handle Gemini errors
+    // Handle Gemini API errors
     if (data.error) {
       return new Response(JSON.stringify({ error: data.error.message }), {
         status: 500,
@@ -53,18 +53,4 @@ export default async function handler(req: Request) {
       });
     }
 
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from model.';
-
-    return new Response(JSON.stringify({ reply }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-  } catch (error: any) {
-    console.error('SERVER AI ERROR:', error);
-    return new Response(JSON.stringify({ error: error.message || 'AI error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-}
+    const reply = data?.candidates?.[0]?.conte
