@@ -8,21 +8,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const { prompt } = req.body;
+
     if (!prompt) {
       return res.status(400).json({ error: "Missing prompt" });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return res.status(500).json({ error: "Missing GEMINI_API_KEY in env" });
+      return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
     }
 
-    // IMPORTANT FIX — force v1beta
+    // 🚀 MOST IMPORTANT FIX
     const genAI = new GoogleGenerativeAI(apiKey, {
       apiVersion: "v1beta"
     });
 
-    // free model
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash"
     });
@@ -32,8 +32,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({ reply });
 
-  } catch (err: any) {
-    console.error("API ERROR:", err);
-    return res.status(500).json({ error: err.message || "Unknown error" });
+  } catch (error: any) {
+    console.error("API ERROR:", error);
+    return res.status(500).json({ error: error.message });
   }
 }
