@@ -2,7 +2,6 @@ const OpenAI = require("openai");
 
 module.exports = async (req, res) => {
   try {
-    // Allow only POST
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method not allowed" });
     }
@@ -12,7 +11,6 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: "Missing prompt" });
     }
 
-    // Load API key from Vercel env
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ error: "OPENAI_API_KEY missing" });
@@ -20,29 +18,17 @@ module.exports = async (req, res) => {
 
     const client = new OpenAI({ apiKey });
 
-    // 🔥 OpenAI Responses API call
     const response = await client.responses.create({
-      model: "gpt-5-nano",
-      input: prompt,
-      store: false
+      model: "gpt-4.1-mini",   // BEST small model
+      input: prompt
     });
 
+    const reply = response.output_text || "No response.";
 
-    const finalText =
-      response.output &&
-      response.output[0] &&
-      response.output[0].content &&
-      response.output[0].content[0] &&
-      response.output[0].content[0].text
-        ? response.output[0].content[0].text
-        : "No response received.";
-
-    return res.status(200).json({ reply: finalText });
+    return res.status(200).json({ reply });
 
   } catch (err) {
     console.error("SERVER ERROR:", err);
-    return res.status(500).json({
-      error: err.message || "Something went wrong"
-    });
+    return res.status(500).json({ error: err.message });
   }
 };
