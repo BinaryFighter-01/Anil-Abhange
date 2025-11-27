@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
       store: false
     });
 
-    // Extract text safely
+
     const finalText =
       response.output &&
       response.output[0] &&
