@@ -8,7 +8,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const { prompt } = req.body;
-
     if (!prompt) {
       return res.status(400).json({ error: "Missing prompt" });
     }
@@ -19,19 +18,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    // FINAL FIX
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash-latest"
+    });
 
     const result = await model.generateContent(prompt);
-
-    if (!result?.response) {
-      return res.status(500).json({ error: "Gemini returned no response" });
-    }
-
     const reply = result.response.text();
+
     return res.status(200).json({ reply });
 
   } catch (error: any) {
     console.error("API ERROR:", error);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message || "Unknown error" });
   }
 }
