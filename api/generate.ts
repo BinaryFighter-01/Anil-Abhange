@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/genai";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
@@ -8,29 +8,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const { prompt } = req.body;
+
     if (!prompt) {
       return res.status(400).json({ error: "Missing prompt" });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
+      return res.status(500).json({ error: "Missing GEMINI_API_KEY in Vercel" });
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-
-    // FINAL FIX
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash-latest"
-    });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const result = await model.generateContent(prompt);
-    const reply = result.response.text();
 
-    return res.status(200).json({ reply });
+    return res.status(200).json({
+      reply: result?.response?.text() ?? "No response from model."
+    });
 
   } catch (error: any) {
-    console.error("API ERROR:", error);
-    return res.status(500).json({ error: error.message || "Unknown error" });
+    console.error("SERVER AI ERROR:", error);
+    return res.status(500).json({ error: error.message || "AI error" });
   }
 }
