@@ -316,7 +316,7 @@ const App: React.FC = () => {
                     <div className="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest">Years Experience</div>
                  </motion.div>
                  <motion.div whileHover={{ x: 5 }} className="border-l-2 border-white/20 pl-4 md:pl-6 transition-all">
-                    <div className="text-2xl md:text-3xl font-bold text-white mb-1">3</div>
+                    <div className="text-2xl md:text-3xl font-bold text-white mb-1">6+</div>
                     <div className="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest">Awards Won</div>
                  </motion.div>
               </div>
