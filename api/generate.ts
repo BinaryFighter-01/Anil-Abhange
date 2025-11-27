@@ -18,7 +18,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
     }
 
-    // 🚀 MOST IMPORTANT FIX
+    // 🔥 FIX: FORCE API VERSION TO v1beta
     const genAI = new GoogleGenerativeAI(apiKey, {
       apiVersion: "v1beta"
     });
