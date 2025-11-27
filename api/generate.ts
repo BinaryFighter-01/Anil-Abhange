@@ -8,23 +8,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const { prompt } = req.body;
-
-    if (!prompt) {
-      return res.status(400).json({ error: "Missing prompt" });
-    }
+    if (!prompt) return res.status(400).json({ error: "Missing prompt" });
 
     const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
-    }
+    if (!apiKey) return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
 
-    // 🔥 FIX: FORCE API VERSION TO v1beta
-    const genAI = new GoogleGenerativeAI(apiKey, {
-      apiVersion: "v1beta"
-    });
+    // ⭐ NEW GOOGLE AI STUDIO SDK INITIALIZATION
+    const genAI = new GoogleGenerativeAI(apiKey);
 
+    // ⭐ USE GEMINI 2.0 FLASH — FREE + FAST
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash"
+      model: "gemini-2.0-flash"
     });
 
     const result = await model.generateContent(prompt);
