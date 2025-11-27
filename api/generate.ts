@@ -29,9 +29,9 @@ export default async function handler(req: Request) {
       });
     }
 
-    // Direct REST API call to Gemini
+    // ✅ CHANGED: Using stable model name
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -47,10 +47,29 @@ export default async function handler(req: Request) {
     
     // Handle Gemini API errors
     if (data.error) {
-      return new Response(JSON.stringify({ error: data.error.message }), {
+      console.error('Gemini API Error:', data.error);
+      return new Response(JSON.stringify({ 
+        error: data.error.message || 'Gemini API error'
+      }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    const reply = data?.candidates?.[0]?.conte
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from model.';
+
+    return new Response(JSON.stringify({ reply }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  } catch (error: any) {
+    console.error('SERVER AI ERROR:', error);
+    return new Response(JSON.stringify({ 
+      error: error.message || 'AI error' 
+    }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
