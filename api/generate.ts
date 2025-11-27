@@ -15,16 +15,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return res.status(500).json({ error: "Missing GEMINI_API_KEY in Vercel" });
+      return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const result = await model.generateContent(prompt);
-    const reply = result.response.text();
 
+    if (!result?.response) {
+      return res.status(500).json({ error: "Gemini returned no response" });
+    }
+
+    const reply = result.response.text();
     return res.status(200).json({ reply });
+
   } catch (error: any) {
     console.error("API ERROR:", error);
     return res.status(500).json({ error: error.message });
