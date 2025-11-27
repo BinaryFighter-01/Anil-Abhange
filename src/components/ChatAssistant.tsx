@@ -38,12 +38,14 @@ const ChatAssistant: React.FC = () => {
       const data = await response.json();
       console.log("AI Response:", data);
 
-      // Extract Gemini Response
-      const reply =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-        "I'm having trouble thinking right now. Please try again.";
+      // Handle backend errors
+      if (data.error) {
+        return `Error: ${data.error}`;
+      }
 
-      return reply;
+      // Extract reply from backend response
+      return data.reply || "I'm having trouble thinking right now. Please try again.";
+
     } catch (error) {
       console.error("AI ERROR:", error);
       return "Server error: Unable to reach AI service.";
