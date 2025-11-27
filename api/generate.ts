@@ -1,75 +1,79 @@
 export const config = {
-  runtime: 'edge',
+  runtime: "edge",
 };
 
 export default async function handler(req: Request) {
-  if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+  if (req.method !== "POST") {
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
       status: 405,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   }
 
   try {
     const { prompt } = await req.json();
-    
+
     if (!prompt) {
-      return new Response(JSON.stringify({ error: 'Missing prompt' }), {
+      return new Response(JSON.stringify({ error: "Missing prompt" }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
-    
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'Missing GEMINI_API_KEY' }), {
+      return new Response(JSON.stringify({ error: "Missing GEMINI_API_KEY" }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
     }
 
-    // ✅ USING GEMINI-PRO (GUARANTEED TO WORK)
+    // ✅ UPDATED MODEL NAME
+    const model = "gemini-1.5-flash"; // or "gemini-1.5-pro"
+
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
       {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{
-            parts: [{ text: prompt }]
-          }]
-        })
+          contents: [
+            {
+              parts: [{ text: prompt }],
+            },
+          ],
+        }),
       }
     );
 
     const data = await response.json();
-    
-    // Handle Gemini API errors
+
     if (data.error) {
-      console.error('Gemini API Error:', data.error);
+      console.error("Gemini API Error:", data.error);
       return new Response(JSON.stringify({ 
-        error: data.error.message || 'Gemini API error'
+        error: data.error.message || "Gemini API error" 
       }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
     }
 
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from model.';
+    // Extract text safely
+    const reply =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "No response from model.";
 
     return new Response(JSON.stringify({ reply }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
-
   } catch (error: any) {
-    console.error('SERVER AI ERROR:', error);
+    console.error("SERVER ERROR:", error);
     return new Response(JSON.stringify({ 
-      error: error.message || 'AI error' 
+      error: error.message || "Server error" 
     }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   }
 }
