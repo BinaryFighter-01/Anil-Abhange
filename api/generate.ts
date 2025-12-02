@@ -7,27 +7,25 @@ export default async function handler(req, res) {
     }
 
     const { prompt } = req.body;
-    if (!prompt) {
-      return res.status(400).json({ error: "Missing prompt" });
-    }
+    if (!prompt) return res.status(400).json({ error: "Missing prompt" });
 
     const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
-    }
+    if (!apiKey) return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
 
+    // CORRECT SDK → automatically uses v1beta
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    // ✔ FREE MODEL
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash"
+    });
 
-    // Generate response
     const result = await model.generateContent(prompt);
-    const text = result.response.text();
+    const reply = result.response.text();
 
-    return res.status(200).json({ reply: text });
-  } catch (err) {
-    console.error("GEMINI SERVER ERROR:", err);
-    return res.status(500).json({ error: err.message });
+    return res.status(200).json({ reply });
+
+  } catch (error) {
+    console.error("API ERROR:", error);
+    return res.status(500).json({ error: error.message });
   }
 }
