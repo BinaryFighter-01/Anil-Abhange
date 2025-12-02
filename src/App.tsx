@@ -18,7 +18,8 @@ import {
   Menu,
   X,
   Award,
-  Quote
+  Quote,
+  User
 } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import InteractiveBackground from './components/InteractiveBackground';
