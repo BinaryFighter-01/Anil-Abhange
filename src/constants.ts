@@ -36,14 +36,14 @@ export const SKILLS: Skill[] = [
   { name: "Linux Environment", level: 75, category: "Tools" },
 
   // Soft Skills
-{ name: "Leadership", level: 90, category: "Soft Skill" },
-{ name: "Teamwork & Collaboration", level: 88, category: "Soft Skill" },
-{ name: "Problem Solving", level: 92, category: "Soft Skill" },
-{ name: "Communication Skills", level: 85, category: "Soft Skill" },
-{ name: "Adaptability & Quick Learning", level: 90, category: "Soft Skill" },
-{ name: "Time Management", level: 88, category: "Soft Skill" },
-{ name: "Attention to Detail", level: 85, category: "Soft Skill" },
-{ name: "Critical Thinking", level: 87, category: "Soft Skill" },
+  { name: "Leadership", level: 90, category: "Soft Skill" },
+  { name: "Teamwork & Collaboration", level: 88, category: "Soft Skill" },
+  { name: "Problem Solving", level: 92, category: "Soft Skill" },
+  { name: "Communication Skills", level: 85, category: "Soft Skill" },
+  { name: "Adaptability & Quick Learning", level: 90, category: "Soft Skill" },
+  { name: "Time Management", level: 88, category: "Soft Skill" },
+  { name: "Attention to Detail", level: 85, category: "Soft Skill" },
+  { name: "Critical Thinking", level: 87, category: "Soft Skill" },
 
 ];
 
