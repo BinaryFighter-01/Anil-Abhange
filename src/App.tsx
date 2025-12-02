@@ -65,6 +65,7 @@ const App: React.FC = () => {
     'AI & Intelligence': SKILLS.filter(s => s.category === 'AI'),
     'Data Science & Databases': SKILLS.filter(s => s.category === 'Data' || s.category === 'Database'),
     'Engineering & Tools': SKILLS.filter(s => s.category === 'Languages' || s.category === 'Web' || s.category === 'Tools'),
+    'Soft Skills': SKILLS.filter(s => s.category === 'Soft Skill'),
   };
 
   return (
@@ -350,6 +351,7 @@ const App: React.FC = () => {
                         {category.includes('AI') && <BrainCircuit className="w-6 h-6 text-orange-500" />}
                         {category.includes('Data') && <Database className="w-6 h-6 text-blue-500" />}
                         {category.includes('Engineering') && <Cpu className="w-6 h-6 text-emerald-500" />}
+                        {category.includes('Soft') && <User className="w-6 h-6 text-purple-500" />}
                         <h3 className="text-lg md:text-xl font-bold tracking-wide uppercase">{category}</h3>
                     </div>
                     
