@@ -34,6 +34,17 @@ export const SKILLS: Skill[] = [
   { name: "VS Code", level: 90, category: "Tools" },
   { name: "Agile", level: 85, category: "Tools" },
   { name: "Linux Environment", level: 75, category: "Tools" },
+
+  // Soft Skills
+{ name: "Leadership", level: 90, category: "Soft Skill" },
+{ name: "Teamwork & Collaboration", level: 88, category: "Soft Skill" },
+{ name: "Problem Solving", level: 92, category: "Soft Skill" },
+{ name: "Communication Skills", level: 85, category: "Soft Skill" },
+{ name: "Adaptability & Quick Learning", level: 90, category: "Soft Skill" },
+{ name: "Time Management", level: 88, category: "Soft Skill" },
+{ name: "Attention to Detail", level: 85, category: "Soft Skill" },
+{ name: "Critical Thinking", level: 87, category: "Soft Skill" },
+
 ];
 
 export const EXPERIENCES: Experience[] = [
@@ -97,7 +108,7 @@ export const PROJECTS: Project[] = [
     techStack: ["Next.js", "GPT-5", "PostgreSQL"],
     description: "Social media analytics platform utilizing OpenAI GPT-5 and YouTube API for sentiment and toxicity analysis.",
     impact: "24h Cache & API Optimization",
-    links: { github: "https://github.com/BinaryFighter-01", demo: "#" }
+    links: { github: "https://github.com/BinaryFighter-01", demo: "https://comment-iq-psi.vercel.app/" }
   },
   {
     title: "SmartInterview.AI",
@@ -105,7 +116,7 @@ export const PROJECTS: Project[] = [
     techStack: ["React", "Gemini API", "Tailwind"],
     description: "A smart interview simulation platform helping students prepare with real-time AI feedback.",
     impact: "Real-time Feedback Loop",
-    links: { github: "https://github.com/BinaryFighter-01", demo: "#" }
+    links: { github: "https://github.com/BinaryFighter-01", demo: "https://smart-interview-sim.vercel.app/" }
   },
   {
     title: "UAV Object Detection",
@@ -113,7 +124,7 @@ export const PROJECTS: Project[] = [
     techStack: ["YOLOv8", "Python", "OpenCV"],
     description: "Real-time aerial surveillance system for autonomous drones in challenging environments.",
     impact: "92% Detection Accuracy",
-    links: { github: "https://github.com/BinaryFighter-01", demo: "#" }
+    links: { github: "https://github.com/BinaryFighter-01", demo: "https://github.com/BinaryFighter-01/uav-object-detection.git" }
   }
 ];
 
@@ -165,27 +176,27 @@ export const CERTIFICATIONS: Certification[] = [
 export const TESTIMONIALS: Testimonial[] = [
   {
     text: "Anil's ability to solve complex problems with elegant code is truly impressive. His work on our AI-powered analytics dashboard exceeded our expectations.",
-    author: "Prashant Kanal",
+    author: "Mr.Prashant Kanal",
     role: "Senior Project Manager",
     company: "Tech Innovations Inc."
   },
   {
     text: "One of the most dedicated developers I've worked with. His deep understanding of computer vision algorithms transformed our UAV project.",
-    author: "Sarah Jenkins",
-    role: "CTO",
-    company: "DroneDynamics"
+    author: "Mr.Aditya Patil",
+    role: "Founder",
+    company: "Engineering Bay Corporation"
   },
   {
     text: "Anil brings a unique blend of academic rigor and practical engineering. His contribution to the Legal Tech platform was pivotal.",
-    author: "Rajesh Kumar",
-    role: "Product Lead",
-    company: "Lawbook"
+    author: "Mr.Rudra Hatte",
+    role: "CEO & Founder",
+    company: "Lawbook.in"
   },
   {
     text: "Exceptional problem-solving skills. He optimized our data pipeline, reducing processing time by 40%. A true asset to any engineering team.",
-    author: "Michael Chen",
+    author: "Mr.Sunil Hajare",
     role: "Lead Data Scientist",
-    company: "DataFlow Systems"
+    company: "DataFlow Systems Inc."
   }
 ];
 
