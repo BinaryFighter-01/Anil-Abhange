@@ -2,7 +2,7 @@ export interface Project {
   title: string;
   description: string;
   techStack: string[];
-  category: 'AI/ML' | 'Web Dev' | 'Data Science';
+  category: 'AI/ML' | 'Web Dev' | 'Data Science' | 'Soft Skills';
   impact: string; // Key metric for case study
   links: {
     github: string;
