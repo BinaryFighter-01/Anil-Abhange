@@ -12,11 +12,10 @@ export default async function handler(req, res) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
 
-    // CORRECT SDK → automatically uses v1beta
     const genAI = new GoogleGenerativeAI(apiKey);
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash"
+      model: "gemini-1.5-flash-latest"   // ✅ FIXED MODEL NAME
     });
 
     const result = await model.generateContent(prompt);
