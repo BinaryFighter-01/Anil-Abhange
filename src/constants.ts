@@ -82,7 +82,7 @@ export const EXPERIENCES: Experience[] = [
     ]
   },
   {
-    company: "P.E.S Modern College of Engineering",
+    company: "P.E.S Modern College of Engineering Pune",
     role: "B.E. in AI & Data Science",
     duration: "Mar 2022 - Present",
     type: "Education",
